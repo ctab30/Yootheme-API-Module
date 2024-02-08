@@ -25,6 +25,9 @@ class SettingsListener
             ],
         ]);
 
+        // Add section, using a static JSON configuration as an example
+        $config->addFile('customizer', Path::get('../config/customizer.json'));
+
         // Output dynamic content using API URL retrieved from customizer configuration
         return self::outputDynamicContent($config);
     }
@@ -32,12 +35,6 @@ class SettingsListener
     protected static function outputDynamicContent(Config $config)
     {
         $apiUrl = $config->get('customizer.panels.recipes_api_data.fields.api_url');
-
-        // Debug: Output raw data retrieved from customizer
-        echo "Customizer Data: " . json_encode($config->get('customizer'), JSON_PRETTY_PRINT) . "<br>";
-
-        // Debug: Output API URL retrieved from customizer
-        echo "API URL retrieved from customizer: " . var_export($apiUrl, true) . "<br>";
 
         if (is_string($apiUrl)) {
             // Fetch dynamic content using the API URL
@@ -47,15 +44,15 @@ class SettingsListener
                 // Return the dynamic content
                 return $dynamicContent;
             } else {
-                // Output error message if fetching data fails
+                // Return error message if fetching data fails
                 return "ERROR FETCHING DATA FROM THE API.";
             }
         } elseif (is_array($apiUrl)) {
-            // Output error message if API URL is an array
+            // Return error message if API URL is an array
             return "API URL is an array in customizer. Please provide a valid URL.<br>"
                  . "ERROR FETCHING DATA FROM THE API.";
         } else {
-            // Output error message if API URL is not set or is not a valid string
+            // Return error message if API URL is not set or is not a valid string
             return "API URL is not set in customizer or is not a valid string<br>"
                  . "ERROR FETCHING DATA FROM THE API.";
         }
@@ -63,10 +60,8 @@ class SettingsListener
 
     protected static function fetchDynamicContent($apiUrl)
     {
-        // Here you should fetch the actual data from the API using the provided URL
-        // Replace this with your code to fetch data from the API using cURL or any other method
-
-        // For demonstration purposes, let's return a sample message with API URL
-        return "Fetched dynamic content from API"; // Replace this with actual fetched content
+        // Here, you can implement code to fetch dynamic content from the API
+        // Replace this with your actual code to fetch data from the API
+        return "Fetched dynamic content from API";
     }
 }
